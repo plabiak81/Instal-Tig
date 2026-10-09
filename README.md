@@ -2,20 +2,20 @@
 
 # Instal-tig
 
-**Budowa konstrukcji i instalacji rurowych ze stali nierdzewnej dla przemysłu.**
+**Spawamy rurociągi i stawiamy konstrukcje ze stali nierdzewnej dla przemysłu.**
 
-Kompleksowo realizujemy projekty: od projektu, przez prefabrykację, po montaż i serwis.
+Bierzemy całość: od pomiaru i rysunku, przez prefabrykację w warsztacie, po montaż i serwis.
 
 🌐 **Strona internetowa:** https://plabiak81.github.io/Instal-Tig/  
 📚 **Blog Ekspercki:** https://plabiak81.github.io/Instal-Tig/blog/
 
 ## Oferta
 
-- **Konstrukcje wsporcze**: stabilne i odporne na korozję ramy i podesty
-- **Rurociągi technologiczne**: rurociągi procesowe zgodne z normami higienicznymi
-- **Instalacje przemysłowe**: kompletne systemy rurowe dopasowane do procesów produkcyjnych
-- **Pomosty i platformy**: ergonomiczne rozwiązania ułatwiające dostęp w zakładzie
-- **Obudowy i osłony maszyn**: zabezpieczenia chroniące urządzenia i personel
+- **Konstrukcje wsporcze**: ramy, stelaże i podpory pod rury, zbiorniki i maszyny
+- **Rurociągi technologiczne**: rury na produkt i media, ze spoinami gładkimi także od środka
+- **Instalacje przemysłowe**: cała instalacja pod Twój proces, od zbiornika po miejsce odbioru
+- **Pomosty i platformy**: schody, podesty i barierki do bezpiecznej obsługi
+- **Obudowy i osłony maszyn**: osłony, które chronią ludzi przed ruchomymi częściami, a maszyny przed wodą i brudem
 
 ## Branże
 
