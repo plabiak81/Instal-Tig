@@ -436,3 +436,19 @@ a { color: inherit; }
 .legal a { color: var(--accent); }
 .footer-links { margin: 6px 0; }
 .footer-links a { color: #fff; }
+
+/* E-book: blok zakupu */
+.buy-box {
+    margin-top: 28px;
+    padding: 20px 24px;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius);
+}
+.price { margin: 0 0 12px; font-size: 1.1rem; }
+.price strong { font-size: 2rem; margin-right: 6px; }
+.price span { opacity: 0.85; }
+.btn-buy { display: block; text-align: center; font-size: 1.1rem; }
+.buy-note { margin: 10px 0 0; font-size: 0.9rem; opacity: 0.85; }
+.section-lead a { color: var(--accent); }
