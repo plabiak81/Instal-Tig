@@ -452,3 +452,9 @@ a { color: inherit; }
 .btn-buy { display: block; text-align: center; font-size: 1.1rem; }
 .buy-note { margin: 10px 0 0; font-size: 0.9rem; opacity: 0.85; }
 .section-lead a { color: var(--accent); }
+
+/* E-book: listy */
+.check-list { padding-left: 1.2em; max-width: 70ch; }
+.check-list li { margin-bottom: 0.4em; }
+.toc ul { padding-left: 1.1em; margin: 0; color: var(--muted); }
+.toc li { margin-bottom: 0.4em; }
