@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wycena online instalacji ze stali nierdzewnej | Instal-Tig</title>
+    <meta name="description" content="Szacunkowa wycena rurociągu, konstrukcji, pomostu albo obudowy ze stali nierdzewnej w minutę. Bezpłatnie i bez zobowiązań. Instal-Tig, Sułów k. Milicza.">
+    <meta name="theme-color" content="#0f2a3d">
+    <link rel="canonical" href="https://plabiak81.github.io/Instal-Tig/wycena.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Instal-tig">
+    <meta property="og:url" content="https://plabiak81.github.io/Instal-Tig/wycena.html">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:title" content="Wycena online | Instal-Tig">
+    <meta property="og:description" content="Ile będzie kosztować Twoja instalacja ze stali nierdzewnej? Odpowiedz na 4 pytania i zobacz szacunkową cenę.">
+    <meta property="og:image" content="https://plabiak81.github.io/Instal-Tig/img/realizacje/realizacja-08.webp">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="index.html" class="logo">
+            <img src="img/logo-white.png" alt="Instal-tig" width="874" height="207">
+        </a>
+        <nav aria-label="Menu główne">
+            <ul class="nav">
+                <li><a href="index.html#offer">Oferta</a></li>
+                <li><a href="index.html#realizacje">Realizacje</a></li>
+                <li><a href="index.html#applications">Branże</a></li>
+                <li><a href="index.html#process">Jak pracujemy</a></li>
+                <li><a href="blog/index.html">Blog Ekspercki</a></li>
+                <li><a href="ebook-haccp.html">E-book HACCP</a></li>
+                <li><a href="wycena.html" aria-current="page">Wycena online</a></li>
+                <li><a href="index.html#contact" class="nav-cta">Kontakt</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero page-hero">
+        <div class="container">
+            <p class="eyebrow">Wycena online</p>
+            <h1>Ile będzie kosztować Twoja instalacja ze stali nierdzewnej?</h1>
+            <p class="lead">Odpowiedz na 4 pytania i zobacz szacunkową cenę. Bezpłatnie i bez zobowiązań. Dokładną ofertę przygotujemy po rozmowie.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container calc">
+    <form id="calc" novalidate>
+        <section class="calc-card">
+            <div class="step-label">Krok 1</div>
+            <h2>Co chcesz zrealizować?</h2>
+            <div class="options" id="type-options"></div>
+        </section>
+
+        <section class="calc-card">
+            <div class="step-label">Krok 2</div>
+            <h2>Zakres prac</h2>
+            <div class="field">
+                <label for="qty" id="qty-label">Długość rurociągu</label>
+                <input type="number" id="qty" min="1" step="1" value="50" inputmode="numeric">
+                <small id="qty-hint"></small>
+            </div>
+            <div class="field" id="dn-field">
+                <label for="dn">Średnica rurociągu</label>
+                <select id="dn"></select>
+            </div>
+        </section>
+
+        <section class="calc-card">
+            <div class="step-label">Krok 3</div>
+            <h2>Materiał i wykończenie</h2>
+            <div class="row">
+                <div class="field">
+                    <label for="steel">Gatunek stali</label>
+                    <select id="steel"></select>
+                </div>
+                <div class="field">
+                    <label for="finish">Wykończenie powierzchni</label>
+                    <select id="finish"></select>
+                </div>
+            </div>
+        </section>
+
+        <section class="calc-card">
+            <div class="step-label">Krok 4</div>
+            <h2>Realizacja</h2>
+            <div class="row">
+                <div class="field">
+                    <label for="distance">Odległość od Sułowa (km)</label>
+                    <input type="number" id="distance" min="0" step="10" value="100" inputmode="numeric">
+                </div>
+                <div class="field">
+                    <label for="deadline">Termin</label>
+                    <select id="deadline"></select>
+                </div>
+            </div>
+            <div class="field">
+                <label class="check"><input type="checkbox" id="design"> Potrzebuję również projektu / dokumentacji</label>
+            </div>
+        </section>
+
+        <section class="calc-card result" aria-live="polite">
+            <div class="step-label">Szacunkowa wycena netto</div>
+            <div class="price" id="price">—</div>
+            <table class="breakdown" id="breakdown"></table>
+            <p class="note">Wycena orientacyjna, netto. Ostateczna cena zależy od wizji lokalnej, dokumentacji i aktualnych cen stali.</p>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" id="show-lead">Chcę dokładną ofertę</button>
+                <a class="btn btn-outline calc-btn-outline" href="tel:+48667466431">Zadzwoń: 667 466 431</a>
+            </div>
+        </section>
+
+        <section class="calc-card hidden" id="lead">
+            <div class="step-label">Ostatni krok</div>
+            <h2>Gdzie wysłać dokładną ofertę?</h2>
+            <div class="row">
+                <div class="field">
+                    <label for="name">Imię i nazwisko *</label>
+                    <input type="text" id="name" autocomplete="name" required>
+                </div>
+                <div class="field">
+                    <label for="company">Firma</label>
+                    <input type="text" id="company" autocomplete="organization">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="phone">Telefon *</label>
+                    <input type="tel" id="phone" autocomplete="tel" required>
+                </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" autocomplete="email">
+                </div>
+            </div>
+            <div class="field">
+                <label for="message">Dodatkowe informacje</label>
+                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu"></textarea>
+            </div>
+            <p class="note" id="lead-error" role="alert"></p>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Wyślij zapytanie</button>
+            </div>
+            <p class="success hidden" id="lead-ok">Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową wiadomością — wystarczy kliknąć „Wyślij”. Odezwiemy się najszybciej, jak to możliwe.</p>
+        </section>
+    </form>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <img src="img/logo-white.png" alt="Instal-tig" class="footer-logo" width="874" height="207">
+        <address class="footer-nap">Instal-Tig Sp. z o.o. · ul. Milicka 29, 56-300 Sułów · <a href="tel:+48667466431">+48 667 466 431</a> · <a href="mailto:slawek_21@op.pl">slawek_21@op.pl</a></address>
+        <p class="footer-links"><a href="polityka-prywatnosci.html">Polityka prywatności i cookies</a> · <a href="https://maps.google.com/maps?cid=6932383949549822453" target="_blank" rel="noopener">Opinie w Google</a> · <a href="https://www.facebook.com/instaltig/" target="_blank" rel="noopener">Facebook</a> · <a href="https://instal-tig.blogspot.com/" target="_blank" rel="noopener">Blog na Bloggerze</a></p>
+        <p>© 2026 Instal-Tig Sp. z o.o. — Wszystkie prawa zastrzeżone</p>
+    </div>
+</footer>
+
+<script>
+// ===================== CENNIK =====================
+// Stawki przykładowe (zł netto). Zastąp je własnymi stawkami firmy —
+// cały kalkulator przelicza się na ich podstawie.
+const CENNIK = {
+    contactEmail: "slawek_21@op.pl",
+    types: {
+        pipe:     { label: "Rurociąg technologiczny", hint: "rurociągi procesowe", unit: "mb", qtyLabel: "Długość rurociągu", qtyHint: "Łączna długość w metrach bieżących.", base: 0, usesDn: true },
+        frame:    { label: "Konstrukcja wsporcza",   hint: "ramy, stelaże",       unit: "kg", qtyLabel: "Szacowana masa konstrukcji", qtyHint: "Nie wiesz? Przyjmij ok. 40 kg na metr bieżący ramy.", base: 38 },
+        platform: { label: "Pomost / platforma",     hint: "z barierkami",        unit: "m²", qtyLabel: "Powierzchnia pomostu", qtyHint: "Powierzchnia robocza w m².", base: 2400 },
+        cover:    { label: "Obudowa / osłona maszyny", hint: "panele, drzwiczki", unit: "m²", qtyLabel: "Powierzchnia obudowy", qtyHint: "Suma powierzchni ścian obudowy w m².", base: 1300 }
+    },
+    // cena za mb rurociągu (materiał + prefabrykacja + montaż) wg średnicy
+    dn: { "DN25": 260, "DN40": 330, "DN50": 390, "DN65": 470, "DN80": 560, "DN100": 690, "DN150": 980 },
+    steel: { "AISI 304": 1.0, "AISI 316L": 1.25 },
+    finish: {
+        "Standardowe (po spawaniu, oczyszczone)": 1.0,
+        "Trawienie i pasywacja": 1.08,
+        "Szlifowanie (szczotkowane)": 1.15,
+        "Elektropolerowanie (higieniczne)": 1.3
+    },
+    deadline: { "Standardowy (6–8 tyg.)": 1.0, "Przyspieszony (3–4 tyg.)": 1.15, "Ekspres (do 2 tyg.)": 1.35 },
+    designPct: 0.08,      // projekt jako % wartości robót
+    travelPerKm: 4.5,     // dojazd ekipy: zł za km (w obie strony liczone razem)
+    mobilization: 1500,   // stały koszt mobilizacji ekipy
+    minOrder: 5000,
+    spread: 0.15          // widełki ceny ±15%
+};
+// ==================================================
+
+const $ = id => document.getElementById(id);
+const fmt = n => Math.round(n / 100) * 100;
+const pln = n => fmt(n).toLocaleString("pl-PL") + " zł";
+
+function fillSelect(el, obj) {
+    el.innerHTML = Object.keys(obj).map(k => `<option>${k}</option>`).join("");
+}
+
+$("type-options").innerHTML = Object.entries(CENNIK.types).map(([key, t], i) =>
+    `<label><input type="radio" name="type" value="${key}"${i === 0 ? " checked" : ""}><strong>${t.label}</strong><small>${t.hint}</small></label>`
+).join("");
+fillSelect($("dn"), CENNIK.dn);
+fillSelect($("steel"), CENNIK.steel);
+fillSelect($("finish"), CENNIK.finish);
+fillSelect($("deadline"), CENNIK.deadline);
+$("dn").value = "DN50";
+
+function currentType() {
+    return CENNIK.types[document.querySelector("input[name=type]:checked").value];
+}
+
+function calculate() {
+    const t = currentType();
+    const qty = Math.max(0, Number($("qty").value) || 0);
+    const unitPrice = t.usesDn ? CENNIK.dn[$("dn").value] : t.base;
+    const works = qty * unitPrice * CENNIK.steel[$("steel").value] * CENNIK.finish[$("finish").value];
+    const rush = works * (CENNIK.deadline[$("deadline").value] - 1);
+    const design = $("design").checked ? (works + rush) * CENNIK.designPct : 0;
+    const travel = CENNIK.mobilization + Math.max(0, Number($("distance").value) || 0) * CENNIK.travelPerKm;
+    const total = Math.max(CENNIK.minOrder, works + rush + design + travel);
+    return { t, qty, works, rush, design, travel, total };
+}
+
+function render() {
+    const t = currentType();
+    $("qty-label").textContent = `${t.qtyLabel} (${t.unit})`;
+    $("qty-hint").textContent = t.qtyHint;
+    $("dn-field").classList.toggle("hidden", !t.usesDn);
+
+    const r = calculate();
+    if (!r.qty) {
+        $("price").textContent = "—";
+        $("breakdown").innerHTML = "";
+        return;
+    }
+    $("price").textContent = `${pln(r.total * (1 - CENNIK.spread))} – ${pln(r.total * (1 + CENNIK.spread))}`;
+    const rows = [
+        ["Materiał, prefabrykacja i montaż", r.works],
+        ["Dopłata za termin", r.rush],
+        ["Projekt i dokumentacja", r.design],
+        ["Dojazd i mobilizacja ekipy", r.travel]
+    ].filter(([, v]) => v > 0);
+    $("breakdown").innerHTML = rows.map(([k, v]) => `<tr><td>${k}</td><td>${pln(v)}</td></tr>`).join("");
+}
+
+function summary() {
+    const r = calculate();
+    const lines = [
+        `Rodzaj: ${r.t.label}`,
+        `Zakres: ${r.qty} ${r.t.unit}${r.t.usesDn ? ", " + $("dn").value : ""}`,
+        `Stal: ${$("steel").value}`,
+        `Wykończenie: ${$("finish").value}`,
+        `Termin: ${$("deadline").value}`,
+        `Odległość: ${$("distance").value} km`,
+        `Projekt: ${$("design").checked ? "tak" : "nie"}`,
+        `Wycena z kalkulatora: ${$("price").textContent} netto`
+    ];
+    return lines.join("\n");
+}
+
+$("calc").addEventListener("input", render);
+$("calc").addEventListener("change", render);
+
+$("show-lead").addEventListener("click", () => {
+    $("lead").classList.remove("hidden");
+    $("name").focus();
+});
+
+$("calc").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = $("name").value.trim();
+    const phone = $("phone").value.trim();
+    if (!name || phone.replace(/\D/g, "").length < 9) {
+        $("lead-error").textContent = "Podaj imię i poprawny numer telefonu, abyśmy mogli oddzwonić.";
+        return;
+    }
+    $("lead-error").textContent = "";
+    const body = [
+        "Dzień dobry,",
+        "proszę o przygotowanie oferty na podstawie kalkulatora:",
+        "",
+        summary(),
+        "",
+        `Imię i nazwisko: ${name}`,
+        `Firma: ${$("company").value.trim() || "-"}`,
+        `Telefon: ${phone}`,
+        `E-mail: ${$("email").value.trim() || "-"}`,
+        "",
+        $("message").value.trim()
+    ].join("\n");
+    const subject = `Zapytanie ofertowe: ${calculate().t.label} — ${$("company").value.trim() || name}`;
+    location.href = `mailto:${CENNIK.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    $("lead-ok").classList.remove("hidden");
+});
+
+render();
+</script>
+<script src="cookies.js"></script>
+</body>
+</html>
