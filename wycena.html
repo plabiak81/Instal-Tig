@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wycena online instalacji ze stali nierdzewnej | Instal-Tig</title>
-    <meta name="description" content="Szacunkowa wycena rurociągu, konstrukcji, pomostu albo obudowy ze stali nierdzewnej w minutę. Bezpłatnie i bez zobowiązań. Instal-Tig, Sułów k. Milicza.">
+    <meta name="description" content="Opisz rurociąg, konstrukcję, pomost albo obudowę ze stali nierdzewnej w 4 krokach, a przygotujemy wycenę. Bezpłatnie i bez zobowiązań. Instal-Tig, Sułów k. Milicza.">
     <meta name="theme-color" content="#0f2a3d">
     <link rel="canonical" href="https://plabiak81.github.io/Instal-Tig/wycena.html">
     <meta property="og:type" content="website">
@@ -12,7 +12,7 @@
     <meta property="og:url" content="https://plabiak81.github.io/Instal-Tig/wycena.html">
     <meta property="og:locale" content="pl_PL">
     <meta property="og:title" content="Wycena online | Instal-Tig">
-    <meta property="og:description" content="Ile będzie kosztować Twoja instalacja ze stali nierdzewnej? Odpowiedz na 4 pytania i zobacz szacunkową cenę.">
+    <meta property="og:description" content="Opisz zlecenie w 4 krokach, a przygotujemy wycenę instalacji ze stali nierdzewnej. Bezpłatnie i bez zobowiązań.">
     <meta property="og:image" content="https://plabiak81.github.io/Instal-Tig/img/realizacje/realizacja-08.webp">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
@@ -42,8 +42,8 @@
     <section class="hero page-hero">
         <div class="container">
             <p class="eyebrow">Wycena online</p>
-            <h1>Ile będzie kosztować Twoja instalacja ze stali nierdzewnej?</h1>
-            <p class="lead">Odpowiedz na 4 pytania i zobacz szacunkową cenę. Bezpłatnie i bez zobowiązań. Dokładną ofertę przygotujemy po rozmowie.</p>
+            <h1>Wycena instalacji ze stali nierdzewnej</h1>
+            <p class="lead">Odpowiedz na 4 pytania i wyślij zapytanie. Przygotujemy wycenę dopasowaną do Twojej instalacji. Bezpłatnie i bez zobowiązań.</p>
         </div>
     </section>
 
@@ -104,19 +104,18 @@
         </section>
 
         <section class="calc-card result" aria-live="polite">
-            <div class="step-label">Szacunkowa wycena netto</div>
-            <div class="price" id="price">—</div>
-            <table class="breakdown" id="breakdown"></table>
-            <p class="note">Wycena orientacyjna, netto. Ostateczna cena zależy od wizji lokalnej, dokumentacji i aktualnych cen stali.</p>
+            <div class="step-label">Twoje zapytanie</div>
+            <table class="breakdown" id="summary"></table>
+            <p class="note">Cenę podamy po zapoznaniu się z zapytaniem. Przy większych zleceniach przyjedziemy na wizję lokalną.</p>
             <div class="actions">
-                <button type="button" class="btn btn-primary" id="show-lead">Chcę dokładną ofertę</button>
+                <button type="button" class="btn btn-primary" id="show-lead">Wyślij zapytanie o wycenę</button>
                 <a class="btn btn-outline calc-btn-outline" href="tel:+48667466431">Zadzwoń: 667 466 431</a>
             </div>
         </section>
 
         <section class="calc-card hidden" id="lead">
             <div class="step-label">Ostatni krok</div>
-            <h2>Gdzie wysłać dokładną ofertę?</h2>
+            <h2>Gdzie wysłać wycenę?</h2>
             <div class="row">
                 <div class="field">
                     <label for="name">Imię i nazwisko *</label>
@@ -139,7 +138,7 @@
             </div>
             <div class="field">
                 <label for="message">Dodatkowe informacje</label>
-                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu"></textarea>
+                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu. Zdjęcia możesz dołączyć do e-maila."></textarea>
             </div>
             <p class="note" id="lead-error" role="alert"></p>
             <div class="actions">
@@ -162,66 +161,54 @@
 </footer>
 
 <script>
-// ===================== CENNIK =====================
-// Stawki przykładowe (zł netto). Zastąp je własnymi stawkami firmy —
-// cały kalkulator przelicza się na ich podstawie.
-const CENNIK = {
+// Wycena online bez kwot: klient opisuje zlecenie, a firma wycenia je sama.
+// Listy opcji można zmieniać tutaj.
+const OPCJE = {
     contactEmail: "slawek_21@op.pl",
     types: {
-        pipe:     { label: "Rurociąg technologiczny", hint: "rurociągi procesowe", unit: "mb", qtyLabel: "Długość rurociągu", qtyHint: "Łączna długość w metrach bieżących.", base: 0, usesDn: true },
-        frame:    { label: "Konstrukcja wsporcza",   hint: "ramy, stelaże",       unit: "kg", qtyLabel: "Szacowana masa konstrukcji", qtyHint: "Nie wiesz? Przyjmij ok. 40 kg na metr bieżący ramy.", base: 38 },
-        platform: { label: "Pomost / platforma",     hint: "z barierkami",        unit: "m²", qtyLabel: "Powierzchnia pomostu", qtyHint: "Powierzchnia robocza w m².", base: 2400 },
-        cover:    { label: "Obudowa / osłona maszyny", hint: "panele, drzwiczki", unit: "m²", qtyLabel: "Powierzchnia obudowy", qtyHint: "Suma powierzchni ścian obudowy w m².", base: 1300 }
+        pipe:     { label: "Rurociąg technologiczny", hint: "rurociągi procesowe", unit: "mb", qtyLabel: "Długość rurociągu", qtyHint: "Łączna długość w metrach bieżących. Wystarczy w przybliżeniu.", usesDn: true },
+        frame:    { label: "Konstrukcja wsporcza",   hint: "ramy, stelaże",       unit: "kg", qtyLabel: "Szacowana masa konstrukcji", qtyHint: "Nie wiesz? Przyjmij ok. 40 kg na metr bieżący ramy albo opisz konstrukcję niżej." },
+        platform: { label: "Pomost / platforma",     hint: "z barierkami",        unit: "m²", qtyLabel: "Powierzchnia pomostu", qtyHint: "Powierzchnia robocza w m²." },
+        cover:    { label: "Obudowa / osłona maszyny", hint: "panele, drzwiczki", unit: "m²", qtyLabel: "Powierzchnia obudowy", qtyHint: "Suma powierzchni ścian obudowy w m²." }
     },
-    // cena za mb rurociągu (materiał + prefabrykacja + montaż) wg średnicy
-    dn: { "DN25": 260, "DN40": 330, "DN50": 390, "DN65": 470, "DN80": 560, "DN100": 690, "DN150": 980 },
-    steel: { "AISI 304": 1.0, "AISI 316L": 1.25 },
-    finish: {
-        "Standardowe (po spawaniu, oczyszczone)": 1.0,
-        "Trawienie i pasywacja": 1.08,
-        "Szlifowanie (szczotkowane)": 1.15,
-        "Elektropolerowanie (higieniczne)": 1.3
-    },
-    deadline: { "Standardowy (6–8 tyg.)": 1.0, "Przyspieszony (3–4 tyg.)": 1.15, "Ekspres (do 2 tyg.)": 1.35 },
-    designPct: 0.08,      // projekt jako % wartości robót
-    travelPerKm: 4.5,     // dojazd ekipy: zł za km (w obie strony liczone razem)
-    mobilization: 1500,   // stały koszt mobilizacji ekipy
-    minOrder: 5000,
-    spread: 0.15          // widełki ceny ±15%
+    dn: ["DN25", "DN40", "DN50", "DN65", "DN80", "DN100", "DN150", "Inna / nie wiem"],
+    steel: ["AISI 304", "AISI 316L", "Nie wiem, doradźcie"],
+    finish: ["Standardowe (po spawaniu, oczyszczone)", "Trawienie i pasywacja", "Szlifowanie (szczotkowane)", "Elektropolerowanie (higieniczne)", "Nie wiem, doradźcie"],
+    deadline: ["Standardowy (6–8 tyg.)", "Przyspieszony (3–4 tyg.)", "Pilny (do 2 tyg.)", "Elastyczny"]
 };
-// ==================================================
 
 const $ = id => document.getElementById(id);
-const fmt = n => Math.round(n / 100) * 100;
-const pln = n => fmt(n).toLocaleString("pl-PL") + " zł";
+const esc = t => String(t).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 
-function fillSelect(el, obj) {
-    el.innerHTML = Object.keys(obj).map(k => `<option>${k}</option>`).join("");
+function fillSelect(el, list) {
+    el.innerHTML = list.map(k => `<option>${k}</option>`).join("");
 }
 
-$("type-options").innerHTML = Object.entries(CENNIK.types).map(([key, t], i) =>
+$("type-options").innerHTML = Object.entries(OPCJE.types).map(([key, t], i) =>
     `<label><input type="radio" name="type" value="${key}"${i === 0 ? " checked" : ""}><strong>${t.label}</strong><small>${t.hint}</small></label>`
 ).join("");
-fillSelect($("dn"), CENNIK.dn);
-fillSelect($("steel"), CENNIK.steel);
-fillSelect($("finish"), CENNIK.finish);
-fillSelect($("deadline"), CENNIK.deadline);
+fillSelect($("dn"), OPCJE.dn);
+fillSelect($("steel"), OPCJE.steel);
+fillSelect($("finish"), OPCJE.finish);
+fillSelect($("deadline"), OPCJE.deadline);
 $("dn").value = "DN50";
 
 function currentType() {
-    return CENNIK.types[document.querySelector("input[name=type]:checked").value];
+    return OPCJE.types[document.querySelector("input[name=type]:checked").value];
 }
 
-function calculate() {
+function rows() {
     const t = currentType();
     const qty = Math.max(0, Number($("qty").value) || 0);
-    const unitPrice = t.usesDn ? CENNIK.dn[$("dn").value] : t.base;
-    const works = qty * unitPrice * CENNIK.steel[$("steel").value] * CENNIK.finish[$("finish").value];
-    const rush = works * (CENNIK.deadline[$("deadline").value] - 1);
-    const design = $("design").checked ? (works + rush) * CENNIK.designPct : 0;
-    const travel = CENNIK.mobilization + Math.max(0, Number($("distance").value) || 0) * CENNIK.travelPerKm;
-    const total = Math.max(CENNIK.minOrder, works + rush + design + travel);
-    return { t, qty, works, rush, design, travel, total };
+    return [
+        ["Rodzaj prac", t.label],
+        ["Zakres", (qty ? `${qty} ${t.unit}` : "do ustalenia") + (t.usesDn ? `, ${$("dn").value}` : "")],
+        ["Stal", $("steel").value],
+        ["Wykończenie", $("finish").value],
+        ["Termin", $("deadline").value],
+        ["Odległość od Sułowa", `${Math.max(0, Number($("distance").value) || 0)} km`],
+        ["Projekt i dokumentacja", $("design").checked ? "tak" : "nie"]
+    ];
 }
 
 function render() {
@@ -229,36 +216,7 @@ function render() {
     $("qty-label").textContent = `${t.qtyLabel} (${t.unit})`;
     $("qty-hint").textContent = t.qtyHint;
     $("dn-field").classList.toggle("hidden", !t.usesDn);
-
-    const r = calculate();
-    if (!r.qty) {
-        $("price").textContent = "—";
-        $("breakdown").innerHTML = "";
-        return;
-    }
-    $("price").textContent = `${pln(r.total * (1 - CENNIK.spread))} – ${pln(r.total * (1 + CENNIK.spread))}`;
-    const rows = [
-        ["Materiał, prefabrykacja i montaż", r.works],
-        ["Dopłata za termin", r.rush],
-        ["Projekt i dokumentacja", r.design],
-        ["Dojazd i mobilizacja ekipy", r.travel]
-    ].filter(([, v]) => v > 0);
-    $("breakdown").innerHTML = rows.map(([k, v]) => `<tr><td>${k}</td><td>${pln(v)}</td></tr>`).join("");
-}
-
-function summary() {
-    const r = calculate();
-    const lines = [
-        `Rodzaj: ${r.t.label}`,
-        `Zakres: ${r.qty} ${r.t.unit}${r.t.usesDn ? ", " + $("dn").value : ""}`,
-        `Stal: ${$("steel").value}`,
-        `Wykończenie: ${$("finish").value}`,
-        `Termin: ${$("deadline").value}`,
-        `Odległość: ${$("distance").value} km`,
-        `Projekt: ${$("design").checked ? "tak" : "nie"}`,
-        `Wycena z kalkulatora: ${$("price").textContent} netto`
-    ];
-    return lines.join("\n");
+    $("summary").innerHTML = rows().map(([k, v]) => `<tr><td>${k}</td><td>${esc(v)}</td></tr>`).join("");
 }
 
 $("calc").addEventListener("input", render);
@@ -280,9 +238,9 @@ $("calc").addEventListener("submit", e => {
     $("lead-error").textContent = "";
     const body = [
         "Dzień dobry,",
-        "proszę o przygotowanie oferty na podstawie kalkulatora:",
+        "proszę o wycenę na podstawie formularza ze strony:",
         "",
-        summary(),
+        rows().map(([k, v]) => `${k}: ${v}`).join("\n"),
         "",
         `Imię i nazwisko: ${name}`,
         `Firma: ${$("company").value.trim() || "-"}`,
@@ -291,8 +249,8 @@ $("calc").addEventListener("submit", e => {
         "",
         $("message").value.trim()
     ].join("\n");
-    const subject = `Zapytanie ofertowe: ${calculate().t.label} — ${$("company").value.trim() || name}`;
-    location.href = `mailto:${CENNIK.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const subject = `Zapytanie o wycenę: ${currentType().label} — ${$("company").value.trim() || name}`;
+    location.href = `mailto:${OPCJE.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     $("lead-ok").classList.remove("hidden");
 });
 

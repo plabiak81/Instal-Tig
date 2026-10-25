@@ -482,3 +482,4 @@ a { color: inherit; }
 .calc .hidden { display: none; }
 .calc .success { color: #1d7a46; font-weight: 600; }
 @media (prefers-color-scheme: dark) { .calc .success { color: #4cc283; } }
+.calc #summary td:last-child { white-space: normal; text-align: right; padding-left: 12px; }
