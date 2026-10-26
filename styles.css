@@ -483,3 +483,5 @@ a { color: inherit; }
 .calc .success { color: #1d7a46; font-weight: 600; }
 @media (prefers-color-scheme: dark) { .calc .success { color: #4cc283; } }
 .calc #summary td:last-child { white-space: normal; text-align: right; padding-left: 12px; }
+.calc .attach-info { margin: 4px 0 14px; }
+.calc .attach-info p { margin: 0; font-size: 0.95rem; }

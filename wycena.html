@@ -101,6 +101,10 @@
             <div class="field">
                 <label class="check"><input type="checkbox" id="design"> Potrzebuję również projektu / dokumentacji</label>
             </div>
+            <div class="field">
+                <label class="check"><input type="checkbox" id="drawings"> Mam rysunki, projekt albo schemat instalacji</label>
+                <small>Rysunki techniczne, projekt (PDF, DWG, DXF), schemat, szkic odręczny albo zdjęcia miejsca bardzo przyspieszają wycenę. Dołączysz je do e-maila w ostatnim kroku.</small>
+            </div>
         </section>
 
         <section class="calc-card result" aria-live="polite">
@@ -138,13 +142,16 @@
             </div>
             <div class="field">
                 <label for="message">Dodatkowe informacje</label>
-                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu. Zdjęcia możesz dołączyć do e-maila."></textarea>
+                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu."></textarea>
+            </div>
+            <div class="callout attach-info">
+                <p><strong>Masz rysunki, projekt albo zdjęcia?</strong> Po kliknięciu „Wyślij zapytanie” otworzy się e-mail z gotową treścią. Dołącz do niego pliki (spinacz albo „Załącz”), zanim go wyślesz. Pasują: PDF, DWG, DXF, zdjęcia, skany szkiców. Duże pliki możesz wysłać linkiem, np. przez WeTransfer albo Dysk Google.</p>
             </div>
             <p class="note" id="lead-error" role="alert"></p>
             <div class="actions">
                 <button type="submit" class="btn btn-primary">Wyślij zapytanie</button>
             </div>
-            <p class="success hidden" id="lead-ok">Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową wiadomością — wystarczy kliknąć „Wyślij”. Odezwiemy się najszybciej, jak to możliwe.</p>
+            <p class="success hidden" id="lead-ok">Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową wiadomością. Jeśli masz rysunki, projekt albo zdjęcia, dołącz je teraz do e-maila, a potem kliknij „Wyślij”. Odezwiemy się najszybciej, jak to możliwe.</p>
         </section>
     </form>
         </div>
@@ -207,7 +214,8 @@ function rows() {
         ["Wykończenie", $("finish").value],
         ["Termin", $("deadline").value],
         ["Odległość od Sułowa", `${Math.max(0, Number($("distance").value) || 0)} km`],
-        ["Projekt i dokumentacja", $("design").checked ? "tak" : "nie"]
+        ["Projekt i dokumentacja", $("design").checked ? "tak" : "nie"],
+        ["Rysunki / projekt od klienta", $("drawings").checked ? "tak, w załączniku" : "nie"]
     ];
 }
 
