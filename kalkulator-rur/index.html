@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulator doboru rur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: parametry po lewej, wynik liczony na żywo po prawej (przyklejony na desktopie), na telefonie wynik pod formularzem. */
+  :root {
+    --bg: #EDF1F4; --surface: #FFFFFF; --ink: #14212B; --muted: #596A76; --line: #D2DAE0;
+    --accent: #0E6A88; --accent-ink: #FFFFFF; --field: #F6F8FA;
+    --ok: #1A7A4A; --warn: #A55A00; --warn-bg: #FFF3E0; --warn-line: #F0C98A;
+    --band: #BFE3D0;
+    --font-display: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
+    --font-body: "Public Sans", "Segoe UI", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D161D; --surface: #15222C; --ink: #E3EBF0; --muted: #8DA2AF; --line: #263A49;
+      --accent: #5BB8D6; --accent-ink: #0D161D; --field: #0F1A22;
+      --ok: #5BD39A; --warn: #F0B35A; --warn-bg: #2B2112; --warn-line: #5A4524; --band: #1E4A38;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D161D; --surface: #15222C; --ink: #E3EBF0; --muted: #8DA2AF; --line: #263A49;
+    --accent: #5BB8D6; --accent-ink: #0D161D; --field: #0F1A22;
+    --ok: #5BD39A; --warn: #F0B35A; --warn-bg: #2B2112; --warn-line: #5A4524; --band: #1E4A38;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 56px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header { margin-bottom: 20px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 5vw, 36px); line-height: 1.1; margin: 4px 0 6px; text-wrap: balance; }
+  .lead { margin: 0; color: var(--muted); max-width: 62ch; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 460px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  @media (max-width: 960px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+  .results { position: sticky; top: 16px; }
+  @media (max-width: 960px) { .results { position: static; } }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+  .panel + .panel { margin-top: 14px; }
+  .panel h2 { font-family: var(--font-display); font-weight: 600; font-size: 18px; margin: 0 0 12px; }
+  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 520px) { .row { grid-template-columns: minmax(0, 1fr); } }
+  .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; min-width: 0; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .field input, .field select {
+    width: 100%; font: inherit; font-family: var(--font-mono); font-size: 14px; color: var(--ink); background: var(--field);
+    border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px;
+  }
+  .field input:focus-visible, .field select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hint { font-size: 12px; color: var(--muted); }
+
+  .hero { display: grid; gap: 4px; }
+  .hero .label, .card .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .dn { font-family: var(--font-display); font-weight: 700; font-size: 56px; line-height: 1; color: var(--accent); }
+  .dn-sub { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; margin-top: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ok); }
+  .dot.warn { background: var(--warn); }
+
+  .gauge { margin-top: 16px; }
+  .track { position: relative; height: 12px; background: var(--field); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .band { position: absolute; top: 0; bottom: 0; background: var(--band); }
+  .marker { position: absolute; top: -3px; bottom: -3px; width: 4px; margin-left: -2px; background: var(--accent); border-radius: 2px; }
+  .scale { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .gauge-cap { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+  .card { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; background: var(--field); min-width: 0; }
+  .card .num { font-family: var(--font-mono); font-size: 20px; font-weight: 500; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .card .sub { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+
+  .recs { list-style: none; padding: 0; margin: 0; }
+  .recs li { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .recs li:last-child { border-bottom: 0; }
+  .recs li::before { content: "→"; color: var(--accent); font-family: var(--font-mono); flex-shrink: 0; }
+  .warns { display: grid; gap: 8px; margin-top: 12px; }
+  .warnbox { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn); border-radius: 6px; padding: 10px 12px; font-size: 13px; }
+  .foot { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.6; }
+
+body{margin:0}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Instal-TIG · narzędzie inżynierskie</div>
+    <h1>Kalkulator doboru rur</h1>
+    <p class="lead">Podaj medium, przepływ i wymagania higieniczne. Średnica, prędkość, liczba Reynoldsa i straty ciśnienia przeliczają się na bieżąco.</p>
+  </header>
+
+  <div class="layout">
+    <div>
+      <section class="panel">
+        <h2>Medium</h2>
+        <div class="field"><label for="medium">Rodzaj medium (ciecze)</label>
+          <select id="medium">
+            <option value="water">Woda / CIP</option>
+            <option value="milk">Mleko i produkty mleczne</option>
+            <option value="beer">Piwo / brzeczka</option>
+            <option value="juice">Soki i napoje</option>
+            <option value="pharma">Media farmaceutyczne / WFI</option>
+            <option value="acid">Roztwory kwasów i ługów (CIP)</option>
+            <option value="oil">Oleje spożywcze</option>
+          </select></div>
+        <div class="row">
+          <div class="field"><label for="temp">Temperatura (°C)</label><input id="temp" type="number" value="20" min="-10" max="150" step="1"></div>
+          <div class="field"><label for="pressure">Ciśnienie robocze (bar)</label><input id="pressure" type="number" value="3" min="0.1" max="40" step="0.1"></div>
+        </div>
+        <div class="field"><label for="viscosity">Lepkość kinematyczna (cSt)</label><input id="viscosity" type="number" value="1" min="0.1" max="5000" step="0.1">
+          <span class="hint">Podstawia się sama po zmianie medium. Dla swojej temperatury wpisz własną wartość.</span></div>
+      </section>
+
+      <section class="panel">
+        <h2>Przepływ i wymagania</h2>
+        <div class="row">
+          <div class="field"><label for="flow">Przepływ (m³/h)</label><input id="flow" type="number" value="5" min="0.1" max="10000" step="0.1"></div>
+          <div class="field"><label for="length">Długość trasy (mb)</label><input id="length" type="number" value="20" min="1" max="5000" step="1"></div>
+        </div>
+        <div class="field"><label for="vPref">Preferowana prędkość</label>
+          <select id="vPref">
+            <option value="auto">Automatyczna (zalecana)</option>
+            <option value="slow">Niska: 0,5–1,0 m/s</option>
+            <option value="medium">Średnia: 1,0–2,0 m/s</option>
+            <option value="fast">Wysoka: 2,0–3,5 m/s</option>
+          </select></div>
+        <div class="field"><label for="hygiene">Wymagania higieniczne</label>
+          <select id="hygiene">
+            <option value="standard">Standard, przemysł spożywczy</option>
+            <option value="ehedg">EHEDG, mleczarstwo i przetwórstwo</option>
+            <option value="3a">3-A Sanitary, eksport do USA</option>
+            <option value="pharma">GMP / farmacja / WFI</option>
+          </select></div>
+        <div class="row">
+          <div class="field"><label for="joints">System złączy</label>
+            <select id="joints">
+              <option value="triclamp">Tri-Clamp</option>
+              <option value="welded">Spawane TIG / orbital</option>
+              <option value="sms">SMS / DIN 11851</option>
+              <option value="mixed">Mieszany</option>
+            </select></div>
+          <div class="field"><label for="environment">Środowisko pracy</label>
+            <select id="environment">
+              <option value="indoor">Halowe, suche</option>
+              <option value="wet">Mokre / myjnia</option>
+              <option value="outdoor">Zewnętrzne</option>
+              <option value="aggressive">Agresywne chemicznie</option>
+            </select></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="results" aria-live="polite">
+      <section class="panel" id="out"></section>
+      <section class="panel"><h2>Zalecenia dla tej instalacji</h2><ul class="recs" id="recs"></ul><div class="warns" id="warns"></div></section>
+      <p class="foot">Wynik jest wstępny i nie zastępuje projektu uprawnionego projektanta. Wymiary rur wg DIN 11850, seria 2. Straty ciśnienia liczone dla odcinków prostych metodą Darcy'ego–Weisbacha (wzór Blasiusa dla przepływu turbulentnego), bez kształtek i armatury.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var PIPES = [
+    ["DN 10", 13, 1.5], ["DN 15", 19, 1.5], ["DN 20", 23, 1.5], ["DN 25", 29, 1.5], ["DN 32", 35, 1.5], ["DN 40", 41, 1.5],
+    ["DN 50", 53, 1.5], ["DN 65", 70, 2], ["DN 80", 85, 2], ["DN 100", 104, 2], ["DN 125", 129, 2], ["DN 150", 154, 2], ["DN 200", 204, 2]
+  ].map(function (p) { return { dn: p[0], od: p[1], t: p[2], id: p[1] - 2 * p[2] }; });
+
+  var MEDIUM = {
+    water:  { rho: 1000, nu: 1.0, steel: "1.4301 (AISI 304)", note: "Standard dla wody i CIP bez chloru" },
+    milk:   { rho: 1030, nu: 1.5, steel: "1.4404 (AISI 316L)", note: "Odporność na chlorki, standard mleczarski" },
+    beer:   { rho: 1010, nu: 1.5, steel: "1.4404 (AISI 316L)", note: "Odporność na CO₂ i CIP" },
+    juice:  { rho: 1040, nu: 1.5, steel: "1.4404 (AISI 316L)", note: "Odporność na kwasy organiczne" },
+    pharma: { rho: 1000, nu: 1.0, steel: "1.4435 (316L, niski ferryt δ)", note: "Ra ≤ 0,5 μm, zgodność z ASME BPE" },
+    acid:   { rho: 1050, nu: 1.0, steel: "1.4404 (AISI 316L)", note: "Pasywacja po spawaniu wymagana" },
+    oil:    { rho: 920,  nu: 60,  steel: "1.4301 (AISI 304)", note: "Dla olejów roślinnych wystarczający" }
+  };
+  var HYG = {
+    standard: "Ra ≤ 3,2 μm na powierzchni wewnętrznej",
+    ehedg: "EHEDG: Ra ≤ 0,8 μm, bez martwych stref",
+    "3a": "3-A Sanitary: Ra ≤ 0,8 μm",
+    pharma: "GMP / ASME BPE: Ra ≤ 0,5 μm, elektropolerowanie"
+  };
+  var JOINT = {
+    triclamp: "Tri-Clamp: szybki demontaż, dobre CIP, uszczelki EPDM lub PTFE",
+    welded: "Spawanie TIG / orbital: pełna szczelność i brak martwych stref",
+    sms: "SMS / DIN 11851: popularny w mleczarstwie, łatwa dostępność części",
+    mixed: "System mieszany: dopasuj średnice zewnętrzne na stykach"
+  };
+
+  function $(id) { return document.getElementById(id); }
+  function num(id) { var v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+  function fmt(x, d) { return x.toLocaleString("pl-PL", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+
+  function calc() {
+    var medium = $("medium").value, m = MEDIUM[medium];
+    var Q = Math.max(num("flow"), 0.01) / 3600;
+    var nu = Math.max(num("viscosity"), 0.01) * 1e-6;
+    var L = Math.max(num("length"), 1), P = num("pressure"), T = num("temp");
+    var pref = $("vPref").value, hyg = $("hygiene").value, joints = $("joints").value, env = $("environment").value;
+
+    var vMin, vMax;
+    if (pref === "slow") { vMin = 0.5; vMax = 1.0; }
+    else if (pref === "medium") { vMin = 1.0; vMax = 2.0; }
+    else if (pref === "fast") { vMin = 2.0; vMax = 3.5; }
+    else if (medium === "oil") { vMin = 0.3; vMax = 1.0; }
+    else if (medium === "pharma") { vMin = 0.5; vMax = 2.0; }
+    else { vMin = 1.0; vMax = 3.0; }
+
+    function vel(p) { return Q / (Math.PI * Math.pow(p.id / 2000, 2)); }
+    var pipe = null;
+    for (var i = 0; i < PIPES.length; i++) { if (vel(PIPES[i]) <= vMax) { pipe = PIPES[i]; break; } }
+    if (!pipe) pipe = PIPES[PIPES.length - 1];
+    var v = vel(pipe), d = pipe.id / 1000;
+    var Re = v * d / nu;
+    var f = Re > 4000 ? 0.316 / Math.pow(Re, 0.25) : 64 / Math.max(Re, 1);
+    var dP = f * (L / d) * 0.5 * m.rho * v * v / 1e5;
+    var grad = dP / L * 100;
+    var regime = Re < 2300 ? "laminarny" : Re < 4000 ? "przejściowy" : "turbulentny";
+
+    var warns = [];
+    if (v > vMax) warns.push("Prędkość " + fmt(v, 2) + " m/s przekracza zakres nawet w największej średnicy z tabeli. Rozważ kilka równoległych linii.");
+    if (v < vMin) warns.push("Prędkość " + fmt(v, 2) + " m/s jest niska. Grozi sedymentacją i słabym myciem CIP. Najmniejsza średnica z tabeli już jest wybrana.");
+    if (grad > 1) warns.push("Spadek ciśnienia " + fmt(grad, 2) + " bar na 100 m jest wysoki. Rozważ większą średnicę lub pompę o wyższym ciśnieniu.");
+    if (hyg !== "standard" && v < 1.5 && (medium === "water" || medium === "acid")) warns.push("Dla mycia CIP zalecana prędkość to co najmniej 1,5 m/s. Sprawdź przepływ myjący, nie tylko produkcyjny.");
+    if (medium === "pharma" && joints === "triclamp") warns.push("Farmacja z Tri-Clamp: użyj złączy zgodnych z ASME BPE i uszczelek PTFE lub EPDM o odpowiednim certyfikacie.");
+    if (T > 90) warns.push("Temperatura powyżej 90°C: sprawdź zakres pracy uszczelek (EPDM, PTFE) i rozszerzalność cieplną trasy.");
+
+    var recs = [
+      "Gatunek stali: <b>" + m.steel + "</b>. " + m.note,
+      "Powierzchnia wewnętrzna: " + HYG[hyg],
+      "Złącza: " + JOINT[joints],
+      "Rury i kształtki wg DIN 11850 / EN 10357 (większa średnica wewnętrzna przy cieńszej ściance)"
+    ];
+    if (env === "aggressive") recs.push("Środowisko agresywne: rozważ 1.4539 (904L) lub inny gatunek o wyższej odporności");
+    if (medium === "pharma") recs.push("Elektropolerowanie wewnątrz i pasywacja po spawaniu");
+    if (Re > 4000 && hyg !== "standard") recs.push("Przepływ turbulentny sprzyja skutecznemu myciu CIP");
+
+    var scaleMax = Math.max(4, vMax * 1.3);
+    var bandL = vMin / scaleMax * 100, bandW = (vMax - vMin) / scaleMax * 100, mark = Math.min(v / scaleMax, 1) * 100;
+
+    $("out").innerHTML =
+      '<div class="hero"><span class="label">Zalecana średnica</span><span class="dn">' + pipe.dn + '</span>' +
+      '<span class="dn-sub">Ø' + pipe.od + ' × ' + fmt(pipe.t, 1) + ' mm · średnica wewnętrzna ' + pipe.id + ' mm</span>' +
+      '<span class="status"><span class="dot' + (warns.length ? " warn" : "") + '"></span>' + (warns.length ? "Sprawdź ostrzeżenia poniżej" : "Parametry w zalecanym zakresie") + '</span></div>' +
+      '<div class="gauge"><div class="gauge-cap">Prędkość ' + fmt(v, 2) + ' m/s, zalecany zakres ' + fmt(vMin, 1) + '–' + fmt(vMax, 1) + ' m/s</div>' +
+      '<div class="track"><div class="band" style="left:' + bandL + '%;width:' + bandW + '%"></div><div class="marker" style="left:' + mark + '%"></div></div>' +
+      '<div class="scale"><span>0</span><span>' + fmt(scaleMax / 2, 1) + '</span><span>' + fmt(scaleMax, 1) + ' m/s</span></div></div>' +
+      '<div class="grid">' +
+      card("Liczba Reynoldsa", Math.round(Re).toLocaleString("pl-PL"), "przepływ " + regime) +
+      card("Straty ciśnienia", fmt(dP, 3) + " bar", "na " + fmt(L, 0) + " mb trasy prostej") +
+      card("Spadek", fmt(grad, 2) + " bar", "na 100 m") +
+      card("Przepływ", fmt(num("flow"), 1) + " m³/h", fmt(num("flow") * 1000 / 60, 0) + " l/min") +
+      '</div>';
+    $("recs").innerHTML = recs.map(function (r) { return "<li><span>" + r + "</span></li>"; }).join("");
+    $("warns").innerHTML = warns.map(function (w) { return '<div class="warnbox">' + w + "</div>"; }).join("");
+  }
+  function card(l, n, s) { return '<div class="card"><div class="label">' + l + '</div><div class="num">' + n + '</div><div class="sub">' + s + "</div></div>"; }
+
+  $("medium").addEventListener("change", function () { $("viscosity").value = MEDIUM[$("medium").value].nu; });
+  document.addEventListener("input", calc);
+  document.addEventListener("change", calc);
+  calc();
+})();
+</script>
+
+</body>
+</html>
