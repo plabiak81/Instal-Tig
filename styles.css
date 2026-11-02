@@ -485,3 +485,7 @@ a { color: inherit; }
 .calc #summary td:last-child { white-space: normal; text-align: right; padding-left: 12px; }
 .calc .attach-info { margin: 4px 0 14px; }
 .calc .attach-info p { margin: 0; font-size: 0.95rem; }
+
+.article-photo { margin: 1.2em 0 1.6em; }
+.article-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); background: var(--bg-alt); }
+.article-photo figcaption { margin-top: 8px; font-size: 0.9rem; color: var(--muted); }
