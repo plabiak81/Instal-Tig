@@ -489,3 +489,5 @@ a { color: inherit; }
 .article-photo { margin: 1.2em 0 1.6em; }
 .article-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); background: var(--bg-alt); }
 .article-photo figcaption { margin-top: 8px; font-size: 0.9rem; color: var(--muted); }
+.post-card-photo { display: block; margin: -24px -24px 18px; }
+.post-card-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0; background: var(--bg-alt); }
