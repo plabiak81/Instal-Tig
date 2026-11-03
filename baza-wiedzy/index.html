@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baza wiedzy Instal-TIG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: wyszukiwarka i filtry nad siatką kart; artykuł otwiera się w tym samym miejscu, w jednej kolumnie do czytania. */
+  :root {
+    --bg: #EDF1F4; --surface: #FFFFFF; --ink: #14212B; --muted: #596A76; --line: #D2DAE0;
+    --accent: #0E6A88; --accent-ink: #FFFFFF; --field: #F6F8FA;
+    --font-display: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
+    --font-body: "Public Sans", "Segoe UI", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D161D; --surface: #15222C; --ink: #E3EBF0; --muted: #8DA2AF; --line: #263A49;
+      --accent: #5BB8D6; --accent-ink: #0D161D; --field: #0F1A22; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D161D; --surface: #15222C; --ink: #E3EBF0; --muted: #8DA2AF; --line: #263A49;
+    --accent: #5BB8D6; --accent-ink: #0D161D; --field: #0F1A22; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 56px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  header { margin-bottom: 20px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 5vw, 36px); line-height: 1.1; margin: 4px 0 6px; text-wrap: balance; }
+  .lead { margin: 0; color: var(--muted); max-width: 62ch; }
+
+  .search { display: block; width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; margin: 18px 0 12px; }
+  .search:focus-visible, .chip:focus-visible, .card:focus-visible, .back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+  .chip { font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 6px 12px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+  .card { text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .card:hover { border-color: var(--accent); }
+  .cat { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .card h2 { font-family: var(--font-display); font-weight: 600; font-size: 20px; line-height: 1.2; margin: 0; text-wrap: balance; }
+  .card p { margin: 0; font-size: 13px; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+  .tag { font-family: var(--font-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 1px 6px; }
+  .empty { text-align: center; color: var(--muted); padding: 48px 16px; }
+
+  .article { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: clamp(18px, 4vw, 36px); }
+  .back { font: inherit; font-size: 13px; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; margin-bottom: 16px; }
+  .article h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 4.5vw, 34px); line-height: 1.12; margin: 6px 0 10px; text-wrap: balance; }
+  .article .sum { color: var(--muted); max-width: 64ch; margin: 0 0 22px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .article h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin: 22px 0 4px; }
+  .article p.body { margin: 0; max-width: 68ch; }
+  .norms { margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
+  .norms .tag { color: var(--ink); }
+
+body{margin:0}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Instal-TIG · wiedza techniczna</div>
+    <h1>Baza wiedzy o instalacjach ze stali nierdzewnej</h1>
+    <p class="lead">Krótkie artykuły o materiałach, spawaniu, normach i myciu instalacji dla przemysłu spożywczego i farmaceutycznego.</p>
+  </header>
+
+  <div id="listView">
+    <label for="q" style="position:absolute;left:-9999px">Szukaj w bazie wiedzy</label>
+    <input class="search" id="q" type="search" placeholder="Szukaj, np. CIP, 316L, EHEDG, pasywacja" autocomplete="off">
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div id="articleView" hidden></div>
+</div>
+
+<script>
+(function () {
+  var CATS = [["all", "Wszystkie"], ["materialy", "Materiały"], ["spawanie", "Spawanie"], ["normy", "Normy"], ["obrobka", "Obróbka"], ["procesy", "Procesy"]];
+  var A = [
+    { id: 1, cat: "materialy", catL: "Materiały", title: "304 czy 316L: który gatunek stali wybrać",
+      sum: "Najczęstsze pytanie w przemyśle spożywczym. Odpowiedź zależy od medium, chlorków i wymagań normowych.",
+      tags: ["304", "316L", "chlorki", "korozja"], norms: ["EN 10088-1", "EN 10357"],
+      s: [
+        ["Różnica w jednym pierwiastku", "Stal 1.4301 (AISI 304) i 1.4404 (AISI 316L) to najczęstsze gatunki austenityczne w instalacjach higienicznych. Różni je molibden: 316L zawiera około 2,0–2,5% Mo, co mocno podnosi odporność na korozję wżerową w środowisku z jonami chlorkowymi (Cl⁻)."],
+        ["Kiedy wystarczy 304", "Woda pitna i lodowa, CIP roztworami bez chloru, instalacje parowe oraz konstrukcje nośne w suchych halach. Jeśli medium nie zawiera chlorków, a środowisko jest łagodne, 304 jest uzasadnione ekonomicznie."],
+        ["Kiedy potrzebne jest 316L", "Mleko i serwatka, soki (kwasy organiczne), piwo i brzeczka, solanki, CIP ze środkami chlorowymi oraz hale o dużej wilgotności i solach. Chlorki rzędu setek ppm w podwyższonej temperaturze potrafią wywołać wżery na 304."],
+        ["Co znaczy litera L", "L oznacza niską zawartość węgla (C ≤ 0,030%). Przy spawaniu węgiel wiąże chrom w węgliki na granicach ziaren, a strefa przy spoinie traci odporność na korozję międzykrystaliczną. W instalacjach spawanych stosuje się więc 316L, nie zwykłe 316."],
+        ["Praktyczna zasada", "Dla żywności i napojów domyślnie wybieraj 1.4404. Różnicę w cenie materiału zwykle odrobisz, unikając reklamacji i korozji w czasie eksploatacji."]
+      ] },
+    { id: 2, cat: "spawanie", catL: "Spawanie", title: "TIG orbitalny a TIG ręczny",
+      sum: "Spawanie orbitalne jest standardem w instalacjach higienicznych. Kiedy ręczny TIG wystarcza, a kiedy nie.",
+      tags: ["TIG", "orbital", "spoina", "gaz osłonowy"], norms: ["EN ISO 4063", "EN ISO 15614-1", "EN ISO 9606-1", "ASME BPE"],
+      s: [
+        ["Na czym polega spawanie orbitalne", "Głowica obraca się mechanicznie wokół rury i prowadzi łuk po zaprogramowanej trajektorii. Prąd, prędkość i gaz są stałe, więc spoina jest powtarzalna i mniej zależy od ręki spawacza."],
+        ["Zalety w instalacjach higienicznych", "Gładka grań wewnętrzna bez nadlewu i wklęśnięć, w których zalega medium. Pełna dokumentacja parametrów każdej spoiny. W farmacji (ASME BPE) spawanie orbitalne jest praktycznie standardem, a EHEDG zaleca je tam, gdzie liczy się jakość grani."],
+        ["Kiedy stosuje się TIG ręczny", "Przy kształtkach o złożonej geometrii, w miejscach niedostępnych dla głowicy, na większych średnicach i przy mocowaniu do konstrukcji wsporczych. Wymaga spawacza z kwalifikacją wg EN ISO 9606-1."],
+        ["Gaz osłonowy i purging", "Argon wysokiej czystości z zewnątrz i od wewnątrz rury. Bez osłony wewnętrznej grań się utlenia, a barwy nalotowe oznaczają uszczuplenie chromu i spadek odporności korozyjnej."],
+        ["Kwalifikacje i dokumenty", "Instrukcja technologiczna spawania (WPS) według EN ISO 15614-1 oraz uprawnienia spawaczy. W farmacji dochodzą dokumentacja kwalifikacji procesu i protokoły z inspekcji grani."]
+      ] },
+    { id: 3, cat: "normy", catL: "Normy i certyfikaty", title: "EHEDG: czego wymaga od instalacji",
+      sum: "Wytyczne higienicznego projektowania, które stały się branżowym standardem w mleczarstwie i przetwórstwie żywności.",
+      tags: ["EHEDG", "higiena", "CIP", "Ra", "martwe strefy"], norms: ["EHEDG Doc. 8", "EN ISO 14159", "ISO 2852"],
+      s: [
+        ["Czym jest EHEDG", "European Hygienic Engineering and Design Group to organizacja producentów, instytutów badawczych i organów nadzoru. Publikuje wytyczne projektowania urządzeń i instalacji, które da się skutecznie myć i które nie tworzą miejsc zalegania drobnoustrojów."],
+        ["Rury i kształtki", "Powierzchnia wewnętrzna o chropowatości Ra ≤ 0,8 μm. Brak martwych stref, więc odgałęzienia wykonuje się trójnikami higienicznymi, a nie ślepymi odcinkami. Odcinki poziome ze spadkiem, żeby instalacja odwadniała się samoczynnie. Armatura z certyfikatem EHEDG."],
+        ["Warunki skutecznego CIP", "Prędkość czynnika myjącego co najmniej 1,5 m/s i przepływ turbulentny. Typowe temperatury: ług około 70–80°C, kwas około 60–70°C. Czynnik musi dotrzeć do każdego punktu bez demontażu."],
+        ["Złącza i armatura", "Podstawą są Tri-Clamp (ISO 2852) i złącza mleczarskie. Uszczelki z EPDM lub PTFE dopuszczone do kontaktu z żywnością. Standardowe zawory kulowe nie spełniają wymagań, stosuje się zawory membranowe lub higieniczne kulowe."],
+        ["Dokumenty na audyt", "Atesty materiałowe 3.1, lista spoin z protokołami, pomiary Ra, schemat instalacji z punktami krytycznymi oraz certyfikaty armatury."]
+      ] },
+    { id: 4, cat: "normy", catL: "Normy i certyfikaty", title: "Tri-Clamp, DIN 11851 i SMS: który system złączy",
+      sum: "Trzy najczęstsze systemy złączy higienicznych w Europie. Różnią się geometrią, dostępnością części i zastosowaniem.",
+      tags: ["Tri-Clamp", "DIN 11851", "SMS", "złącza"], norms: ["ISO 2852", "DIN 32676", "DIN 11851", "ASME BPE"],
+      s: [
+        ["Tri-Clamp (ISO 2852, DIN 32676)", "Klamra zaciskowa łączy dwie końcówki z uszczelką między nimi. Montaż i demontaż trwa chwilę, mycie CIP jest dobre, a armatura i czujniki są szeroko dostępne. Dominuje w nowych instalacjach spożywczych, browarniczych i farmaceutycznych."],
+        ["DIN 11851 (złącze mleczarskie)", "Złącze z gwintem i nakrętką. Wytrzymałe mechanicznie i odporne na drgania, ale wolniejsze w montażu. Zużyta uszczelka pogarsza czystość, więc wymaga kontroli. Nadal często spotykane w mleczarstwie i przy modernizacjach."],
+        ["SMS", "Standard skandynawski zbliżony do DIN 11851, z inną geometrią gwintu. Najczęściej pojawia się w projektach eksportowych lub gdy klient wprost go specyfikuje."],
+        ["Jak wybrać", "Nowa instalacja spożywcza lub browarnicza: Tri-Clamp. Modernizacja istniejącej linii z DIN 11851: zostań przy DIN albo użyj adapterów. Farmacja i biotechnologia: Tri-Clamp zgodny z ASME BPE. Projekt skandynawski: sprawdź, czy klient wymaga SMS."],
+        ["Adaptery", "Systemy nie łączą się ze sobą bez przejściówek. Każdy adapter to potencjalna martwa strefa, więc stosuj je tylko tam, gdzie to konieczne, i sprawdź ich mycie w CIP."]
+      ] },
+    { id: 5, cat: "obrobka", catL: "Obróbka i wykończenie", title: "Pasywacja i trawienie po spawaniu",
+      sum: "Po spawaniu stal traci warstwę pasywną w strefie wpływu ciepła. Trawienie i pasywacja ją przywracają.",
+      tags: ["pasywacja", "trawienie", "spoiny", "korozja"], norms: ["ASTM A380", "ASME BPE", "EN ISO 15730"],
+      s: [
+        ["Warstwa pasywna", "Odporność stali nierdzewnej zapewnia cienka (kilka nanometrów) warstwa tlenków bogatych w chrom. Spawanie, szlifowanie i obróbka mechaniczna ją uszkadzają lub zanieczyszczają, a metal staje się podatny na korozję."],
+        ["Trawienie", "Chemiczne usunięcie nalotów spawalniczych, tlenków i zanieczyszczeń żelazem za pomocą past lub kąpieli trawiących. Po trawieniu powierzchnia jest czysta metalicznie. Zalecane po każdym spawaniu w instalacjach higienicznych."],
+        ["Pasywacja", "Obróbka roztworem kwasu azotowego lub cytrynowego, która przyspiesza odbudowę warstwy ochronnej. Skuteczność można sprawdzić testem ferroksylowym lub pomiarem elektrochemicznym."],
+        ["Kiedy jest wymagana", "ASME BPE i GMP wymagają pasywacji z dokumentacją. W EHEDG jest zalecana po spawaniu. W mleczarstwie i browarnictwie jej brak jest częstą uwagą audytorów."],
+        ["Bezpieczeństwo", "Kwas fluorowodorowy w mieszaninach trawiących jest bardzo groźny: wchłania się przez skórę bez bólu i wiąże wapń we krwi. Wymaga odzieży kwasoodpornej, rękawic, ochrony twarzy i dróg oddechowych oraz natrysku w zasięgu. Ścieki z trawienia wymagają neutralizacji i utylizacji jako odpady niebezpieczne."]
+      ] },
+    { id: 6, cat: "normy", catL: "Normy i certyfikaty", title: "EN 1090 dla wykonawcy konstrukcji stalowych",
+      sum: "Od 2014 roku wykonanie konstrukcji nośnych ze stali wymaga certyfikacji zakładowej kontroli produkcji.",
+      tags: ["EN 1090", "EXC", "CE", "konstrukcje"], norms: ["EN 1090-1", "EN 1090-2", "EN ISO 3834"],
+      s: [
+        ["Co reguluje norma", "EN 1090-1 i EN 1090-2 opisują wymagania dla stalowych i aluminiowych konstrukcji nośnych wprowadzanych na rynek europejski. Dotyczy to m.in. ram wsporczych, pomostów technologicznych i podestów o charakterze konstrukcji budowlanej."],
+        ["Klasy wykonania EXC1–EXC4", "EXC1 to konstrukcje proste o małych skutkach awarii, EXC2 to standard dla większości hal i obiektów przemysłowych, EXC3 i EXC4 obejmują obiekty o dużych konsekwencjach awarii. Podesty i ramy w zakładach spożywczych zwykle mieszczą się w EXC2."],
+        ["Co trzeba mieć", "Certyfikat zakładowej kontroli produkcji wydany przez jednostkę notyfikowaną. Potwierdza on kontrolę materiałów, kwalifikacje spawaczy, nadzór nad procesem i dokumentację. Do dostawy dołącza się deklarację właściwości użytkowych."],
+        ["Znaczenie dla klienta", "Konstrukcji nośnej od wykonawcy bez certyfikatu nie da się legalnie wbudować w obiekt budowlany, a odbiór może zostać zakwestionowany przez nadzór budowlany. W projektach eksportowych wymaganie jest egzekwowane szczególnie ściśle."]
+      ] },
+    { id: 7, cat: "procesy", catL: "Procesy technologiczne", title: "CIP i SIP: mycie i sterylizacja w miejscu",
+      sum: "Procesy, od których zależy bezpieczeństwo instalacji. Jak działają i co oznaczają dla projektanta.",
+      tags: ["CIP", "SIP", "mycie", "dezynfekcja"], norms: ["EHEDG Doc. 4", "EN ISO 14159", "Codex Alimentarius HACCP"],
+      s: [
+        ["CIP: mycie bez demontażu", "Gorące roztwory środków myjących krążą przez rurociągi, zbiorniki i armaturę bez rozbierania instalacji. Typowy cykl: płukanie wodą, ług (NaOH około 1–2%, 75–80°C), płukanie, kwas (HNO₃ około 0,5–1%, 65°C), płukanie końcowe wodą."],
+        ["Warunki skuteczności", "Przepływ turbulentny przy prędkości co najmniej 1,5 m/s, temperatura około 70°C lub wyższa dla ługu i czas kontaktu zwykle 15–30 minut. Każda powierzchnia musi być zwilżona, dlatego EHEDG zabrania martwych stref i ślepych odcinków."],
+        ["SIP: sterylizacja parą", "Stosowana głównie w farmacji i biotechnologii. Para nasycona (około 121°C) działa zwykle 20–30 minut. Instalacja musi znieść temperaturę, dobrze odwadniać się i mieć pułapki parowe. Minimum to 316L, w farmacji preferowany 1.4435."],
+        ["Wpływ na projekt", "Spadki odcinków poziomych dla samoodwodnienia, brak ślepych zakończeń, armatura zgodna z CIP (membranowa lub higieniczna kulowa) oraz higieniczne przyłącza czujników temperatury i ciśnienia."],
+        ["Dokumentacja HACCP", "Mycie CIP jest zwykle punktem kontrolnym w systemie HACCP. Wymaga opisanej procedury, rejestracji parametrów (temperatura, czas, stężenie) i weryfikacji skuteczności, na przykład wymazami lub testem ATP. Instalacja powinna umożliwiać pobranie próbek po myciu."]
+      ] },
+    { id: 8, cat: "materialy", catL: "Materiały", title: "Chropowatość Ra: co oznacza i jak ją mierzyć",
+      sum: "Jeden z najważniejszych parametrów higienicznych. Decyduje o tym, czy drobnoustroje mają gdzie się ukryć przed myciem.",
+      tags: ["Ra", "chropowatość", "szlifowanie", "elektropolerowanie"], norms: ["EN ISO 21920", "EHEDG Doc. 8", "ASME BPE", "3-A 18-03"],
+      s: [
+        ["Czym jest Ra", "Ra to średnie odchylenie profilu powierzchni od linii środkowej, podawane w mikrometrach. Im niższe, tym trudniej drobnoustrojom przywierać i tworzyć biofilm. Wartość 0,8 μm to umowna granica wymagana przez EHEDG i 3-A."],
+        ["Typowe wartości", "Rura w stanie dostawy (2B): około 0,5–1,0 μm. Po szlifowaniu drobnym ziarnem: około 0,4–0,6 μm. Rura wyżarzana jasno (BA): do około 0,5 μm. Po elektropolerowaniu: 0,1–0,4 μm. Dokładne wartości zależą od procesu i zawsze trzeba je potwierdzić pomiarem."],
+        ["Jak się mierzy", "Profilometrem stykowym lub optycznym, z podaniem długości bazowej i liczby pomiarów. Na audyt EHEDG lub ASME BPE potrzebny jest protokół pomiarów podpisany przez osobę upoważnioną."],
+        ["Ra po spawaniu", "Spoina orbitalna przy dobrych parametrach daje grań o chropowatości zbliżonej do materiału rodzimego. Spoina ręczna bez obróbki może mieć wyraźnie wyższe Ra i wymaga doszlifowania. Nalot spawalniczy trzeba usunąć trawieniem."],
+        ["Elektropolerowanie", "Elektrochemiczne wygładzanie w kąpieli kwasowej usuwa mikrochropowatości, daje lustrzaną powierzchnię i grubszą warstwę pasywną. Jest kilka razy droższe od szlifowania, więc stosuje się je głównie w farmacji i biotechnologii. Wykonuje się je po trawieniu, nie zamiast niego."]
+      ] }
+  ];
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  var cat = "all", q = "";
+  $("chips").innerHTML = CATS.map(function (c) { return '<button class="chip" type="button" data-cat="' + c[0] + '" aria-pressed="' + (c[0] === "all") + '">' + c[1] + "</button>"; }).join("");
+
+  function renderList() {
+    var ql = q.toLowerCase();
+    var list = A.filter(function (a) {
+      if (cat !== "all" && a.cat !== cat) return false;
+      if (!ql) return true;
+      return (a.title + " " + a.sum + " " + a.tags.join(" ")).toLowerCase().indexOf(ql) !== -1;
+    });
+    $("grid").innerHTML = list.length ? list.map(function (a) {
+      return '<button class="card" type="button" data-id="' + a.id + '"><span class="cat">' + a.catL + "</span><h2>" + esc(a.title) + "</h2><p>" + esc(a.sum) + '</p><span class="tags">' +
+        a.tags.slice(0, 3).map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") + "</span></button>";
+    }).join("") : '<div class="empty" style="grid-column:1/-1">Brak artykułów dla tego zapytania. Zmień słowo kluczowe albo wybierz kategorię „Wszystkie”.</div>';
+    Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-cat") === cat); });
+  }
+
+  function openArticle(id) {
+    var a = A.filter(function (x) { return x.id === id; })[0];
+    $("articleView").innerHTML = '<article class="article"><button class="back" type="button" id="back">← Wszystkie artykuły</button>' +
+      '<div class="cat">' + a.catL + "</div><h2>" + esc(a.title) + '</h2><p class="sum">' + esc(a.sum) + "</p>" +
+      a.s.map(function (s) { return "<h3>" + esc(s[0]) + '</h3><p class="body">' + esc(s[1]) + "</p>"; }).join("") +
+      '<div class="norms"><span>Normy i odniesienia:</span>' + a.norms.map(function (n) { return '<span class="tag">' + esc(n) + "</span>"; }).join("") + "</div></article>";
+    $("listView").hidden = true; $("articleView").hidden = false;
+    $("back").addEventListener("click", closeArticle);
+    window.scrollTo(0, 0);
+  }
+  function closeArticle() { $("articleView").hidden = true; $("listView").hidden = false; window.scrollTo(0, 0); }
+
+  $("q").addEventListener("input", function (e) { q = e.target.value.trim(); renderList(); });
+  $("chips").addEventListener("click", function (e) { var b = e.target.closest(".chip"); if (b) { cat = b.getAttribute("data-cat"); renderList(); } });
+  $("grid").addEventListener("click", function (e) { var c = e.target.closest(".card"); if (c) openArticle(parseInt(c.getAttribute("data-id"), 10)); });
+  renderList();
+})();
+</script>
+
+</body>
+</html>
