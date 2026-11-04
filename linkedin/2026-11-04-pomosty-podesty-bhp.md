@@ -12,7 +12,7 @@ Balustrada na pomoście: 1,1 m to dopiero początek.
 
 Przy zbiornikach, pasteryzatorach i estakadach ktoś regularnie musi wejść wyżej: do zaworu, czujnika albo włazu. Pomost, podest i schody to konstrukcje, przy których błąd szybko kończy się wypadkiem.
 
-Co mówią przepisy BHP o balustradzie:
+Co mówią o balustradzie przepisy BHP, które warto mieć w głowie przed zamówieniem:
 – poręcz na wysokości co najmniej 1,1 m,
 – krawężnik co najmniej 0,15 m,
 – poprzeczka w połowie wysokości albo wypełnienie, które nie pozwoli wypaść.
@@ -21,7 +21,7 @@ Przy dojściach do maszyn dochodzą normy PN-EN ISO 14122. Dla schodów zalecaj�
 
 W zakładach spożywczych dochodzi higiena: otwarte kraty zamiast płaskich powierzchni, na których stoi woda, szczelnie zaspawane profile i stal nierdzewna zamiast malowanej czarnej, z której łuszcząca się farba może trafić do produktu.
 
-Zebraliśmy te wymagania w jednym artykule na naszym Blogu Eksperckim. Link w pierwszym komentarzu.
+Zebrałem te wymagania w jednym artykule na naszym Blogu Eksperckim. Link w pierwszym komentarzu.
 
 #BHP #stalnierdzewna #utrzymanieruchu #przemysłspożywczy #konstrukcjestalowe
 
@@ -35,7 +35,7 @@ Balustrada na pomoście: 1,1 m to dopiero początek.
 
 Przy zbiornikach, pasteryzatorach i estakadach ktoś regularnie musi wejść wyżej: do zaworu, czujnika albo włazu. Pomost, podest i schody to konstrukcje, przy których błąd szybko kończy się wypadkiem.
 
-Co mówią przepisy BHP o balustradzie:
+Co mówią o balustradzie przepisy BHP, które warto mieć w głowie przed zamówieniem:
 – poręcz na wysokości co najmniej 1,1 m,
 – krawężnik co najmniej 0,15 m,
 – poprzeczka w połowie wysokości albo wypełnienie, które nie pozwoli wypaść.
