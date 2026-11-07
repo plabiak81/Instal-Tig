@@ -8,7 +8,7 @@
 
 ## Treść posta
 
-Trzy oferty na tę samą instalację, a ceny różnią się dwukrotnie. Często nie chodzi o marżę, tylko o to, że każdy wykonawca wycenił inny zakres.
+Kilka ofert na tę samą instalację, a ceny mocno się różnią? Często powód jest prosty: każdy wykonawca wycenił inny zakres.
 
 Najczęstsza przyczyna to niejasna granica dostaw. Zanim wyślesz zapytanie, warto napisać wprost:
 – kto kupuje zawory, pompy, czujniki i armaturę,
@@ -31,7 +31,7 @@ Cały artykuł: https://plabiak81.github.io/Instal-Tig/blog/zapytanie-ofertowe-i
 
 ## Wersja z linkiem w treści (alternatywa)
 
-Trzy oferty na tę samą instalację, a ceny różnią się dwukrotnie. Często nie chodzi o marżę, tylko o to, że każdy wykonawca wycenił inny zakres.
+Kilka ofert na tę samą instalację, a ceny mocno się różnią? Często powód jest prosty: każdy wykonawca wycenił inny zakres.
 
 Najczęstsza przyczyna to niejasna granica dostaw. Zanim wyślesz zapytanie, warto napisać wprost:
 – kto kupuje zawory, pompy, czujniki i armaturę,
