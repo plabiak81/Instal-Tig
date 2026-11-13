@@ -11,10 +11,10 @@
 Spawanie orbitalne czy ręczne TIG? Orbitalne nie zawsze jest lepsze, a „orbitalne” nie znaczy „bez spawacza”.
 
 Orbitalne daje przewagę, gdy:
-✅ spoin jest dużo i są powtarzalne,
-✅ liczy się higiena i równa spoina od środka,
-✅ trzeba zapisać parametry każdej spoiny,
-✅ rury są cienkościenne.
+– spoin jest dużo i są powtarzalne,
+– liczy się higiena i równa spoina od środka,
+– trzeba zapisać parametry każdej spoiny,
+– rury są cienkościenne.
 
 Ręczne TIG często wychodzi lepiej przy kilku spoinach w różnych średnicach, przy konstrukcjach i przy przeróbkach w działającym zakładzie.
 
@@ -33,10 +33,10 @@ Cały artykuł: https://plabiak81.github.io/Instal-Tig/blog/spawanie-orbitalne-c
 Spawanie orbitalne czy ręczne TIG? Orbitalne nie zawsze jest lepsze, a „orbitalne” nie znaczy „bez spawacza”.
 
 Orbitalne daje przewagę, gdy:
-✅ spoin jest dużo i są powtarzalne,
-✅ liczy się higiena i równa spoina od środka,
-✅ trzeba zapisać parametry każdej spoiny,
-✅ rury są cienkościenne.
+– spoin jest dużo i są powtarzalne,
+– liczy się higiena i równa spoina od środka,
+– trzeba zapisać parametry każdej spoiny,
+– rury są cienkościenne.
 
 Ręczne TIG często wychodzi lepiej przy kilku spoinach w różnych średnicach, przy konstrukcjach i przy przeróbkach w działającym zakładzie.
 
