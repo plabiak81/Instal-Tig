@@ -11,11 +11,11 @@
 „Kupiliśmy nierdzewkę, a po pół roku są rude zacieki.” Da się tego uniknąć już przy projekcie, wykonaniu i myciu instalacji.
 
 Pięć zasad, które chronią stal nierdzewną:
-✅ gatunek stali dobrany do medium, temperatury i chemii myjącej (przy chlorkach zwykle 316L zamiast 304),
-✅ spawanie z osłoną gazową i formowaniem grani, a potem usunięcie przebarwień,
-✅ osobne narzędzia i stanowiska do stali czarnej i nierdzewnej,
-✅ projekt bez szczelin, martwych stref i miejsc, gdzie stoi woda,
-✅ mycie zgodnie z zaleceniami producenta chemii i dokładne spłukiwanie.
+– gatunek stali dobrany do medium, temperatury i chemii myjącej (przy chlorkach zwykle 316L zamiast 304),
+– spawanie z osłoną gazową i formowaniem grani, a potem usunięcie przebarwień,
+– osobne narzędzia i stanowiska do stali czarnej i nierdzewnej,
+– projekt bez szczelin, martwych stref i miejsc, gdzie stoi woda,
+– mycie zgodnie z zaleceniami producenta chemii i dokładne spłukiwanie.
 
 Uwaga też na łączenie nierdzewki ze stalą węglową albo aluminium: w wilgoci szybciej koroduje ten drugi metal, więc takie połączenia warto izolować.
 
@@ -32,11 +32,11 @@ Cały artykuł: https://plabiak81.github.io/Instal-Tig/blog/korozja-stali-nierdz
 „Kupiliśmy nierdzewkę, a po pół roku są rude zacieki.” Da się tego uniknąć już przy projekcie, wykonaniu i myciu instalacji.
 
 Pięć zasad, które chronią stal nierdzewną:
-✅ gatunek stali dobrany do medium, temperatury i chemii myjącej (przy chlorkach zwykle 316L zamiast 304),
-✅ spawanie z osłoną gazową i formowaniem grani, a potem usunięcie przebarwień,
-✅ osobne narzędzia i stanowiska do stali czarnej i nierdzewnej,
-✅ projekt bez szczelin, martwych stref i miejsc, gdzie stoi woda,
-✅ mycie zgodnie z zaleceniami producenta chemii i dokładne spłukiwanie.
+– gatunek stali dobrany do medium, temperatury i chemii myjącej (przy chlorkach zwykle 316L zamiast 304),
+– spawanie z osłoną gazową i formowaniem grani, a potem usunięcie przebarwień,
+– osobne narzędzia i stanowiska do stali czarnej i nierdzewnej,
+– projekt bez szczelin, martwych stref i miejsc, gdzie stoi woda,
+– mycie zgodnie z zaleceniami producenta chemii i dokładne spłukiwanie.
 
 Uwaga też na łączenie nierdzewki ze stalą węglową albo aluminium: w wilgoci szybciej koroduje ten drugi metal, więc takie połączenia warto izolować.
 
