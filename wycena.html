@@ -145,16 +145,28 @@
             </div>
             <div class="field">
                 <label for="message">Dodatkowe informacje</label>
-                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu."></textarea>
+                <textarea id="message" rows="3" placeholder="Np. medium, ciśnienie, lokalizacja zakładu, link do rysunków."></textarea>
             </div>
+            <div class="hp-field" aria-hidden="true">
+                <label for="website">Nie wypełniaj tego pola</label>
+                <input type="text" id="website" tabindex="-1" autocomplete="off">
+            </div>
+            <p class="note consent">Wysyłając formularz, przekazujesz nam dane, żebyśmy mogli przygotować wycenę i się z Tobą skontaktować. Szczegóły w <a href="polityka-prywatnosci.html">polityce prywatności</a>.</p>
             <div class="callout attach-info">
-                <p><strong>Masz rysunki, projekt albo zdjęcia?</strong> Po kliknięciu „Wyślij zapytanie” otworzy się e-mail z gotową treścią. Dołącz do niego pliki (spinacz albo „Załącz”), zanim go wyślesz. Pasują: PDF, DWG, DXF, zdjęcia, skany szkiców. Duże pliki możesz wysłać linkiem, np. przez WeTransfer albo Dysk Google.</p>
+                <p><strong>Masz rysunki, projekt albo zdjęcia?</strong> Wklej link do plików w polu „Dodatkowe informacje” (np. z WeTransfer albo Dysku Google) albo po wysłaniu zapytania prześlij je e-mailem na <a href="mailto:slawek_21@op.pl">slawek_21@op.pl</a>. Pasują: PDF, DWG, DXF, zdjęcia, skany szkiców.</p>
             </div>
             <p class="note" id="lead-error" role="alert"></p>
             <div class="actions">
-                <button type="submit" class="btn btn-primary">Wyślij zapytanie</button>
+                <button type="submit" class="btn btn-primary" id="send-btn">Wyślij zapytanie</button>
             </div>
-            <p class="success hidden" id="lead-ok">Dziękujemy! Otworzyliśmy Twój program pocztowy z gotową wiadomością. Jeśli masz rysunki, projekt albo zdjęcia, dołącz je teraz do e-maila, a potem kliknij „Wyślij”. Odezwiemy się najszybciej, jak to możliwe.</p>
+            <p class="success hidden" id="lead-ok" role="status">Dziękujemy! Zapytanie dotarło do nas. Odezwiemy się najszybciej, jak to możliwe. Jeśli masz rysunki, projekt albo zdjęcia, <a id="files-mail" href="mailto:slawek_21@op.pl">wyślij je e-mailem na slawek_21@op.pl</a>.</p>
+            <div class="hidden" id="lead-fallback" role="alert">
+                <p class="note">Nie udało się wysłać formularza (np. brak internetu). Możesz wysłać to samo zapytanie e-mailem albo zadzwonić.</p>
+                <div class="actions">
+                    <a class="btn btn-primary" id="fallback-mail" href="mailto:slawek_21@op.pl">Wyślij zapytanie e-mailem</a>
+                    <a class="btn btn-outline calc-btn-outline" href="tel:+48667466431">Zadzwoń: 667 466 431</a>
+                </div>
+            </div>
         </section>
     </form>
         </div>
@@ -218,7 +230,7 @@ function rows() {
         ["Termin", $("deadline").value],
         ["Odległość od Sułowa", `${Math.max(0, Number($("distance").value) || 0)} km`],
         ["Projekt i dokumentacja", $("design").checked ? "tak" : "nie"],
-        ["Rysunki / projekt od klienta", $("drawings").checked ? "tak, w załączniku" : "nie"]
+        ["Rysunki / projekt od klienta", $("drawings").checked ? "tak (link w opisie albo prześle e-mailem)" : "nie"]
     ];
 }
 
@@ -238,7 +250,15 @@ $("show-lead").addEventListener("click", () => {
     $("name").focus();
 });
 
-$("calc").addEventListener("submit", e => {
+// Formularz wysyła zapytanie przez FormSubmit (formsubmit.co) prosto na e-mail firmy.
+// Pierwsze zapytanie wymaga jednorazowej aktywacji linkiem z e-maila od FormSubmit.
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/" + OPCJE.contactEmail;
+
+function mailtoLink(subject, body) {
+    return `mailto:${OPCJE.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+$("calc").addEventListener("submit", async e => {
     e.preventDefault();
     const name = $("name").value.trim();
     const phone = $("phone").value.trim();
@@ -247,22 +267,61 @@ $("calc").addEventListener("submit", e => {
         return;
     }
     $("lead-error").textContent = "";
+    if ($("website").value) return; // pole-pułapka na boty
+
+    const company = $("company").value.trim();
+    const email = $("email").value.trim();
+    const message = $("message").value.trim();
+    const subject = `Zapytanie o wycenę: ${currentType().label} — ${company || name}`;
+    const details = rows();
     const body = [
         "Dzień dobry,",
         "proszę o wycenę na podstawie formularza ze strony:",
         "",
-        rows().map(([k, v]) => `${k}: ${v}`).join("\n"),
+        details.map(([k, v]) => `${k}: ${v}`).join("\n"),
         "",
         `Imię i nazwisko: ${name}`,
-        `Firma: ${$("company").value.trim() || "-"}`,
+        `Firma: ${company || "-"}`,
         `Telefon: ${phone}`,
-        `E-mail: ${$("email").value.trim() || "-"}`,
+        `E-mail: ${email || "-"}`,
         "",
-        $("message").value.trim()
+        message
     ].join("\n");
-    const subject = `Zapytanie o wycenę: ${currentType().label} — ${$("company").value.trim() || name}`;
-    location.href = `mailto:${OPCJE.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    $("lead-ok").classList.remove("hidden");
+
+    const payload = {
+        _subject: subject,
+        _template: "table",
+        _captcha: "false",
+        "Imię i nazwisko": name,
+        "Firma": company || "-",
+        "Telefon": phone,
+        "E-mail": email || "-"
+    };
+    details.forEach(([k, v]) => { payload[k] = v; });
+    payload["Dodatkowe informacje"] = message || "-";
+    if (email) payload._replyto = email;
+
+    const btn = $("send-btn");
+    btn.disabled = true;
+    btn.textContent = "Wysyłanie…";
+    $("lead-fallback").classList.add("hidden");
+    try {
+        const res = await fetch(FORM_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || String(data.success) !== "true") throw new Error(data.message || res.status);
+        $("files-mail").href = mailtoLink(`Rysunki do zapytania: ${currentType().label} — ${company || name}`, "");
+        $("lead-ok").classList.remove("hidden");
+        btn.textContent = "Wysłano";
+    } catch (err) {
+        $("fallback-mail").href = mailtoLink(subject, body);
+        $("lead-fallback").classList.remove("hidden");
+        btn.disabled = false;
+        btn.textContent = "Spróbuj ponownie";
+    }
 });
 
 render();

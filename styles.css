@@ -491,3 +491,9 @@ a { color: inherit; }
 .article-photo figcaption { margin-top: 8px; font-size: 0.9rem; color: var(--muted); }
 .post-card-photo { display: block; margin: -24px -24px 18px; }
 .post-card-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0; background: var(--bg-alt); }
+
+/* Wycena online: wysyłka formularza */
+.calc .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.calc .consent { margin: 0 0 12px; }
+.calc .consent a, .calc .success a, .calc .attach-info a { color: var(--accent); }
+.calc button[disabled] { opacity: 0.7; cursor: default; }
