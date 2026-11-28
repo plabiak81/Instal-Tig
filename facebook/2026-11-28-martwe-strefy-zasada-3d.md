@@ -8,9 +8,9 @@
 
 ## Treść posta
 
-Martwe strefy rzadko są w projekcie. Częściej powstają później, przy przeróbkach: ktoś dokłada czujnik, przenosi zawór albo zaślepia nieużywaną linię „na przyszłość”. 🔧
+Martwe strefy często powstają nie na projekcie, tylko później, przy przeróbkach: ktoś dokłada czujnik, przenosi zawór albo zaślepia nieużywaną linię „na przyszłość”. 🔧
 
-Gdzie najczęściej je znajdujemy?
+Gdzie pojawiają się najczęściej?
 – króćce pod czujniki na długich trójnikach,
 – zawory na odgałęzieniach daleko od rury głównej,
 – zaślepione trójniki i odcinki po zdemontowanych urządzeniach,
@@ -31,9 +31,9 @@ Cały artykuł: https://plabiak81.github.io/Instal-Tig/blog/martwe-strefy-zasada
 
 ## Wersja z linkiem w treści (alternatywa)
 
-Martwe strefy rzadko są w projekcie. Częściej powstają później, przy przeróbkach: ktoś dokłada czujnik, przenosi zawór albo zaślepia nieużywaną linię „na przyszłość”. 🔧
+Martwe strefy często powstają nie na projekcie, tylko później, przy przeróbkach: ktoś dokłada czujnik, przenosi zawór albo zaślepia nieużywaną linię „na przyszłość”. 🔧
 
-Gdzie najczęściej je znajdujemy?
+Gdzie pojawiają się najczęściej?
 – króćce pod czujniki na długich trójnikach,
 – zawory na odgałęzieniach daleko od rury głównej,
 – zaślepione trójniki i odcinki po zdemontowanych urządzeniach,
