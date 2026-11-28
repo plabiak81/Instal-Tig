@@ -11,10 +11,10 @@
 Martwe strefy rzadko są w projekcie. Częściej powstają później, przy przeróbkach: ktoś dokłada czujnik, przenosi zawór albo zaślepia nieużywaną linię „na przyszłość”. 🔧
 
 Gdzie najczęściej je znajdujemy?
-– króćce pod czujniki temperatury, ciśnienia czy przepływu, zwłaszcza na długich trójnikach,
-– zawory odcinające na odgałęzieniach, zamontowane daleko od rury głównej,
+– króćce pod czujniki na długich trójnikach,
+– zawory na odgałęzieniach daleko od rury głównej,
 – zaślepione trójniki i odcinki po zdemontowanych urządzeniach,
-– obejścia (by-passy), którymi płynie tylko podczas awarii lub serwisu,
+– obejścia (by-passy) używane tylko przy awarii lub serwisie,
 – punkty poboru próbek i spusty z długimi króćcami.
 
 W takim miejscu roztwór myjący nie wymienia się, więc nawet dobry program CIP go nie umyje.
@@ -34,10 +34,10 @@ Cały artykuł: https://plabiak81.github.io/Instal-Tig/blog/martwe-strefy-zasada
 Martwe strefy rzadko są w projekcie. Częściej powstają później, przy przeróbkach: ktoś dokłada czujnik, przenosi zawór albo zaślepia nieużywaną linię „na przyszłość”. 🔧
 
 Gdzie najczęściej je znajdujemy?
-– króćce pod czujniki temperatury, ciśnienia czy przepływu, zwłaszcza na długich trójnikach,
-– zawory odcinające na odgałęzieniach, zamontowane daleko od rury głównej,
+– króćce pod czujniki na długich trójnikach,
+– zawory na odgałęzieniach daleko od rury głównej,
 – zaślepione trójniki i odcinki po zdemontowanych urządzeniach,
-– obejścia (by-passy), którymi płynie tylko podczas awarii lub serwisu,
+– obejścia (by-passy) używane tylko przy awarii lub serwisie,
 – punkty poboru próbek i spusty z długimi króćcami.
 
 W takim miejscu roztwór myjący nie wymienia się, więc nawet dobry program CIP go nie umyje.
